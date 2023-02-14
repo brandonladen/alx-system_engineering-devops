@@ -1,2 +1,2 @@
 #!/bin/bash
-hello My$USER
+echo hello $USER
