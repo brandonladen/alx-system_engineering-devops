@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-# Install nginx web server
-sudo apt -y update
-sudo apt -y upgrade
-sudo apt -y install nginx
+# Install nginx
+# Nginx should be listening on port 80
+
+sudo apt-get update
+sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
-# Give the user ownership to website files for easy editing
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
-echo "Hello World!" | sudo tee /var/www/html/index.html
-sudo service nginx start
+sudo echo "Hello, world!" | sudo tee /var/www/html/index.html
+sudo service nginx restart
