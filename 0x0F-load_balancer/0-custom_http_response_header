@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Configures a new Ubuntu server with a custom HTTP header response
+sudo apt -y update
+sudo apt -y upgrade
+sudo apt -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo chmod 777 /var/www/html/index.nginx-debian.html
+sudo chmod 777 /etc/nginx/sites-available/
+sudo chmod 777 /etc/nginx/sites-available/default
+echo "Hello World!" | sudo tee /var/www/html/index.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+sed -i "/listen 80 default_server;/ a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
+sudo sed -i "/listen 80 default_server;/ a add_header X-Served-By '$HOSTNAME';" /etc/nginx/sites-available/default
+sed -i "/listen 80 default_server;/ a error_page 404 /404.html;" /etc/nginx/sites-available/default
+sed -i "/^\slocation.*/i \        add_header X-Served-By '$HOSTNAME';" /etc/nginx/sites-available/default
+#shellcheck disable=SC2154
+echo "$server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+echo "$server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+sudo service nginx reload
+sudo service nginx start
