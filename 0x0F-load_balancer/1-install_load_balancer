@@ -1,37 +1,21 @@
 #!/usr/bin/env bash
-# Install and configure HAproxy on your lb-01 server.
-# Install HAproxy version 2.0 LTS
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install haproxy
-sudo service haproxy start
-sudo chmod 777 /etc/haproxy
-sudo chmod 777 /etc/haproxy/haproxy.cfg
+# shellcheck disable=SC2016
+# installing and config load balancer
+apt-get -y install software-properties-common
+add-apt-repository -y ppa:vbernat/haproxy-2.0
+apt-get -y update
+apt-get -y install haproxy=2.0.\*
 
-# backup default server config file
-sudo cp /etc/haproxy/haproxy.cfg haproxy_default.backup
+echo "ENABLED=1" >> /etc/default/haproxy
 
-server_config=\
-"
-defaults
-  mode http
-  timeout client 15s
-  timeout connect 10s
-  timeout server 15s
-  timeout http-request 10s
-
-frontend kiranga-tech-frontend
+echo "
+frontend load_balancer
     bind *:80
     mode http
-    default_backend kiranga-tech-backend
-backend kiranga-tech-backend
+    default_backend webserver
+backend webserver
     balance roundrobin
-    38309-web-01 34.224.94.25:80 check
-    38309-web-02 35.153.194.29:80 check
-"
-echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
-
-# enable haproxy to be started by init script
-echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
-
-sudo service haproxy restart
+    server 2152-web-01 35.196.31.36:80 check
+    server 2152-web-02 35.237.103.48:80 check
+" >> /etc/haproxy/haproxy.cfg
+service haproxy restart
