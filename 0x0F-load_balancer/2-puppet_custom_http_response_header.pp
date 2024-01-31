@@ -4,7 +4,7 @@ exec { 'apt-update':
   path    => ['/usr/bin', '/bin'],
 }
 
-# Install Nginx package
+# Install Nginx package n
 package { 'nginx':
   ensure => installed,
 }
