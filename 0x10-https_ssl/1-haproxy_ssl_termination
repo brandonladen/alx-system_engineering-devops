@@ -13,7 +13,8 @@ global
         crt-base /etc/ssl/private
 
         # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
-        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY$
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
         ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
 
 defaults
@@ -32,14 +33,11 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend www-http
-    bind *:80
-    mode http
-    default_backend webserver
-frontend www-https
-        bind *:443 ssl crt /etc/haproxy/certs/www.ahmed-dev.tech.pem
-        default_backend webserver
-backend webserver
-    balance roundrobin
-    server 228892-web-01 54.160.75.117:80 check
-    server 228892-web-02 18.204.20.216:80 check
+frontend  web
+        bind *:80
+        mode http
+        default_backend servers
+backend servers
+        balance roundrobin
+        server 228892-web-01 34.232.77.91:80 check
+        server 228892-web-02 54.167.154.14:80 check
