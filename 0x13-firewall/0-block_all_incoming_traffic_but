@@ -1,3 +1,5 @@
+sudo ufw default deny incoming
+sudo ufw defaults allow outgoing
 sudo ufw allow proto tcp from any to any port 22 #for SSH 
 sudo ufw allow proto tcp from any to any port 80 #for HTTP
 sudo ufw allow proto tcp from any to any port 443 #for HTTPS SSL
