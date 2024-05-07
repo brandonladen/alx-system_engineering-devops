@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 """Function to query subscribers on a given Reddit subreddit."""
+
 import json
 import requests
 
 
 def top_ten(subreddit):
+     """Query Reddit and print titles of the first 10 hot posts"""
+    
     url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
     headers = {
         "User-Agent": "laden_brandon"
