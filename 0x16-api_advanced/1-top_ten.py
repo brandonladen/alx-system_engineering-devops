@@ -11,9 +11,10 @@ def top_ten(subreddit):
 
     # Set a custom User-Agent to avoid too many requests error
     headers = {'User-Agent': 'My user Agent 1.0'}
+    params = {"limit": 10}
 
     # send a GET request to the Reddit API
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
 
     try:
         response = requests.get(url, headers=headers,
