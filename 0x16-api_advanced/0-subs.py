@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Quering Reddit"""
 
+import json
 import requests
 
 
