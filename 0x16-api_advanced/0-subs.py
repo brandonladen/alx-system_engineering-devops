@@ -1,19 +1,14 @@
 #!/usr/bin/python3
-"""Quering Reddit"""
-
+"""Function to query subscribers on a given Reddit subreddit."""
 import json
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """query a subreddit and retrive no of subscribers"""
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {'User-Agent': 'laden_brandon 1.0'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
-
-    if response.status_code == 200:
-        data = response.json().get('data', {})
-        sub_count = data.get('subscribers', 0)
-        return sub_count
+    user = {"User-Agent": "laden_brandon"}
+    request = requests.get("https://www.reddit.com/r/{}/about.json"
+                           .format(subreddit), headers=user)
+    if request.status_code == 200:
+        return request.json().get("data").get("subscribers")
     else:
         return 0
